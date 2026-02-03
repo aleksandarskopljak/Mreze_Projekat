@@ -43,6 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Klase\Enkripcija.cs" />
+    <Compile Include="Klase\Korisnik.cs" />
+    <Compile Include="Klase\Transakcija.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
