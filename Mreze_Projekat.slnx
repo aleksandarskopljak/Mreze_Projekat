@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="Common/Common.csproj" Id="4f9ab564-10a8-4767-841a-4e4aaabcd155" />
+  <Project Path="Filijala/Filijala.csproj" Id="6fee6ced-c218-45c3-84f7-21ca92f9b3b9" />
+  <Project Path="Klijent/Klijent.csproj" Id="a17638d6-323c-4c2b-ad0e-f9b2bf4cd517" />
+  <Project Path="Server/Server.csproj" Id="f06307d3-4902-447f-bda4-1ce55bfd2601" />
+</Solution>
