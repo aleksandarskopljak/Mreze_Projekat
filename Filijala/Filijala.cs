@@ -5,13 +5,16 @@ using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Server
+namespace Filijala
 {
-    internal class Program
+    public class Filijala
     {
+        
        
+        
     }
 }
