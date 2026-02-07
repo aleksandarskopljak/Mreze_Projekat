@@ -2,98 +2,82 @@
 using System.Text;
 
 namespace Common
+{
+    public class Enkriptor
     {
-        public static class Enkriptor
+        private string _kljuc;
+        private const string Karakteri = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 .,;:!?()-+=*/\\\"'@#$%^&[]{}|<>~`\r\n";
+
+        public Enkriptor(string kljuc)
         {
-            public static string Enkriptuj(string poruka, string kljuc)
+            if (string.IsNullOrEmpty(kljuc))
+                throw new ArgumentException("Kljuc ne moze biti prazan");
+            _kljuc = kljuc;
+        }
+
+        public string Sifruj(string tekst)
+        {
+            if (string.IsNullOrEmpty(tekst))
+                return tekst;
+
+            StringBuilder rezultat = new StringBuilder();
+            int kljucIndex = 0;
+
+            foreach (char c in tekst)
             {
-                if (string.IsNullOrEmpty(poruka) || string.IsNullOrEmpty(kljuc))
-                    return poruka;
-
-                var sb = new StringBuilder(poruka.Length);
-                int ki = 0; 
-
-                foreach (char ch in poruka)
+                int tekstIndex = Karakteri.IndexOf(c);
+                if (tekstIndex >= 0)
                 {
-                    char k = kljuc[ki % kljuc.Length];
-                    ki++;
+                    int kljucKarakterIndex = Karakteri.IndexOf(_kljuc[kljucIndex % _kljuc.Length]);
+                    if (kljucKarakterIndex < 0) kljucKarakterIndex = 0;
 
-                    if (ch >= 'A' && ch <= 'Z')
-                    {
-                        int shift = GetLetterShift(k); 
-                        sb.Append((char)('A' + ((ch - 'A' + shift) % 26)));
-                    }
-                    else if (ch >= 'a' && ch <= 'z')
-                    {
-                        int shift = GetLetterShift(k); 
-                        sb.Append((char)('a' + ((ch - 'a' + shift) % 26)));
-                    }
-                    else if (ch >= '0' && ch <= '9')
-                    {
-                        int shift = GetDigitShift(k);
-                        sb.Append((char)('0' + ((ch - '0' + shift) % 10)));
-                    }
-                    else
-                    {
-                        sb.Append(ch);
-                    }
+                    int noviIndex = (tekstIndex + kljucKarakterIndex) % Karakteri.Length;
+                    rezultat.Append(Karakteri[noviIndex]);
+                    kljucIndex++;
                 }
-
-                return sb.ToString();
-            }
-
-            public static string Dekriptuj(string sifrat, string kljuc)
-            {
-                if (string.IsNullOrEmpty(sifrat) || string.IsNullOrEmpty(kljuc))
-                    return sifrat;
-
-                var sb = new StringBuilder(sifrat.Length);
-                int ki = 0;
-
-                foreach (char ch in sifrat)
+                else
                 {
-                    char k = kljuc[ki % kljuc.Length];
-                    ki++;
-
-                    if (ch >= 'A' && ch <= 'Z')
-                    {
-                        int shift = GetLetterShift(k);
-                        sb.Append((char)('A' + ((ch - 'A' - shift + 26) % 26)));
-                    }
-                    else if (ch >= 'a' && ch <= 'z')
-                    {
-                        int shift = GetLetterShift(k);
-                        sb.Append((char)('a' + ((ch - 'a' - shift + 26) % 26)));
-                    }
-                    else if (ch >= '0' && ch <= '9')
-                    {
-                        int shift = GetDigitShift(k);
-                        sb.Append((char)('0' + ((ch - '0' - shift + 10) % 10)));
-                    }
-                    else
-                    {
-                        sb.Append(ch);
-                    }
+                    rezultat.Append(c);
                 }
-
-                return sb.ToString();
             }
 
-            private static int GetLetterShift(char keyChar)
+            return rezultat.ToString();
+        }
+
+        public string Desifruj(string sifrovaniTekst)
+        {
+            if (string.IsNullOrEmpty(sifrovaniTekst))
+                return sifrovaniTekst;
+
+            StringBuilder rezultat = new StringBuilder();
+            int kljucIndex = 0;
+
+            foreach (char c in sifrovaniTekst)
             {
-                if (keyChar >= 'A' && keyChar <= 'Z') return keyChar - 'A';
-                if (keyChar >= 'a' && keyChar <= 'z') return keyChar - 'a';
-                if (keyChar >= '0' && keyChar <= '9') return keyChar - '0';
-                return 0;
+                int tekstIndex = Karakteri.IndexOf(c);
+                if (tekstIndex >= 0)
+                {
+                    int kljucKarakterIndex = Karakteri.IndexOf(_kljuc[kljucIndex % _kljuc.Length]);
+                    if (kljucKarakterIndex < 0) kljucKarakterIndex = 0;
+
+                    int noviIndex = (tekstIndex - kljucKarakterIndex + Karakteri.Length) % Karakteri.Length;
+                    rezultat.Append(Karakteri[noviIndex]);
+                    kljucIndex++;
+                }
+                else
+                {
+                    rezultat.Append(c);
+                }
             }
 
-            private static int GetDigitShift(char keyChar)
-            {
-                if (keyChar >= '0' && keyChar <= '9') return keyChar - '0';
-                if (keyChar >= 'A' && keyChar <= 'Z') return (keyChar - 'A') % 10;
-                if (keyChar >= 'a' && keyChar <= 'z') return (keyChar - 'a') % 10;
-                return 0;
-            }
+            return rezultat.ToString();
+        }
+
+        public void PostaviKljuc(string noviKljuc)
+        {
+            if (string.IsNullOrEmpty(noviKljuc))
+                throw new ArgumentException("Kljuc ne moze biti prazan");
+            _kljuc = noviKljuc;
         }
     }
-
+}
