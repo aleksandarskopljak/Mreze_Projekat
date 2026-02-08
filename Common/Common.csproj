@@ -44,6 +44,7 @@
     <Compile Include="BinarnaSerijalizacija.cs" />
     <Compile Include="Enkriptor.cs" />
     <Compile Include="Korisnik.cs" />
+    <Compile Include="Poruka.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Transakcija.cs" />
   </ItemGroup>
